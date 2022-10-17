@@ -8,7 +8,6 @@ let
    home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-22.05.tar.gz";
 in
 
-
 {
 
   imports =
@@ -77,6 +76,10 @@ services = {
 nixpkgs.overlays = [
 	(final: prev: {
 		dwm = prev.dwm.overrideAttrs (old: { src = builtins.fetchGit "https://github.com/dwm"; });
+		nativeBuildInputs = [
+			prev.yajl	
+			prev.jconcpp
+		];
 	})
 ];
 
@@ -101,47 +104,16 @@ nixpkgs.config.allowUnfree = true;
   # List packages installed in system profile. To search, run:
   # $ nix search wget
    environment.systemPackages = with pkgs; [
-	# Dev
-	git
-	gh
-	wget
-	# Editor
-	neovim
-	# Browser
-	firefox
-	# terminal
-	alacritty
-	st
-	# terminal utils
-	exa
-	# Menu
-	rofi
-	# Audio
-	pulsemixer
-	# Drives
-	ntfs3g
-	fuse
-	# Password Manager
-	bitwarden
-	# Media
-	sxiv
-	mpv
-	zathura
-	# Other
-	devour
-	wine
-	lutris
-	steam
-	ranger
-	virt-manager
-	yajl
-	jsoncpp
-	cmake
-
+   git
+   wget
+   gh
+   firefox
+   ntfs3g
+   fuse
+   virt-manager
+   pulsemixer
+   nitrogen
   ];
-
-
-  hardware.opengl.driSupport32Bit = true;
 
   fonts.fonts = with pkgs; [
 	nerdfonts
@@ -150,7 +122,7 @@ nixpkgs.config.allowUnfree = true;
 
 
 programs.bash.promptInit = ''
-		PS1="\[\e[0;1;31m\][\[\e[0;1;38;5;37m\]\u\[\e[0;1;31m\]] \[\e[0;38;5;73m\]\W\[\e[0;1m\] ♠ \[\e[0m\]"
+		 PS1='\[\e[0;38;5;73m\]\W \[\e[0;1;2;3;38;5;111m\]$(git branch 2>/dev/null | grep '"'"'^*'"'"' | colrm 1 2) \[\e[0m\]♠ \[\e[0m\]' 
 		'';
 
 
